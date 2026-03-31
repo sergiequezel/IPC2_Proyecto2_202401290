@@ -27,4 +27,5 @@ C:\Users\EQUIPO\Documents\MiProyectoIpc2\ProyectoDronesWeb\obj\Debug\net10.0\ref
 C:\Users\EQUIPO\Documents\MiProyectoIpc2\ProyectoDronesWeb\obj\Debug\net10.0\ProyectoDronesWeb.pdb
 C:\Users\EQUIPO\Documents\MiProyectoIpc2\ProyectoDronesWeb\obj\Debug\net10.0\ProyectoDronesWeb.genruntimeconfig.cache
 C:\Users\EQUIPO\Documents\MiProyectoIpc2\ProyectoDronesWeb\obj\Debug\net10.0\ref\ProyectoDronesWeb.dll
-C:\Users\EQUIPO\Documents\MiProyectoIpc2\ProyectoDronesWeb\obj\Debug\net10.0\compressed\2tgmkhz0mm-{0}-8xct2y8pq9-8xct2y8pq9.gz
+C:\Users\EQUIPO\Documents\MiProyectoIpc2\ProyectoDronesWeb\obj\Debug\net10.0\ProyectoDronesWeb.sourcelink.json
+C:\Users\EQUIPO\Documents\MiProyectoIpc2\ProyectoDronesWeb\obj\Debug\net10.0\compressed\2tgmkhz0mm-{0}-vixrc6q54f-vixrc6q54f.gz

@@ -32,48 +32,102 @@ app.MapPost("/upload", async (HttpRequest request) =>
     return Results.Ok("Archivo cargado");
 });
 
+
+int CalcularTiempo(Lista<TiempoAccion> timeline)
+{
+    int max = 0;
+
+    Nodo<TiempoAccion> actual = timeline.ObtenerCabeza();
+
+    while (actual != null)
+    {
+        if (actual.Valor.Tiempo > max)
+            max = actual.Valor.Tiempo;
+
+        actual = actual.Siguiente;
+    }
+
+    return max;
+}
 // =========================
 // ENDPOINT: PROCESAR
 // =========================
-app.MapGet("/procesar", async (HttpContext context) =>
+app.MapGet("/procesar/{nombre}", (string nombre) =>
 {
     XMLService xml = new XMLService();
     xml.CargarXML("wwwroot/entrada.xml");
 
-    var nodoMensaje = xml.Mensajes.ObtenerCabeza();
-    if (nodoMensaje == null)
-        return Results.BadRequest("No hay mensajes");
+    Nodo<Mensaje> actual = xml.Mensajes.ObtenerCabeza();
+    Mensaje seleccionado = null;
 
-    var mensaje = nodoMensaje.Valor;
-    var sistema = xml.BuscarSistema(mensaje.Sistema);
+    while (actual != null)
+    {
+        if (actual.Valor.Nombre == nombre)
+        {
+            seleccionado = actual.Valor;
+            break;
+        }
 
-    if (sistema == null)
-        return Results.BadRequest("Sistema no encontrado");
+        actual = actual.Siguiente;
+    }
+
+    if (seleccionado == null)
+        return Results.BadRequest("Mensaje no encontrado");
+
+    var sistema = xml.BuscarSistema(seleccionado.Sistema);
 
     SimulacionService sim = new SimulacionService();
-    var timeline = sim.Simular(mensaje, sistema);
-    string texto = sim.ReconstruirMensaje(mensaje, sistema);
+    var timeline = sim.Simular(seleccionado, sistema);
+    string texto = sim.ReconstruirMensaje(seleccionado, sistema);
 
     OutputService output = new OutputService();
-    output.GenerarXML("wwwroot/salida.xml", mensaje.Nombre, sistema.Nombre, texto, timeline);
+    output.GenerarXML("wwwroot/salida.xml", seleccionado.Nombre, sistema.Nombre, texto, timeline);
 
     GraphvizService graph = new GraphvizService();
     graph.GenerarSistemaDot("wwwroot/sistema.dot", sistema);
     graph.GenerarInstruccionesDot("wwwroot/timeline.dot", timeline);
-
     graph.GenerarImagen("wwwroot/sistema.dot", "wwwroot/sistema.png");
     graph.GenerarImagen("wwwroot/timeline.dot", "wwwroot/timeline.png");
 
     return Results.Ok(new
     {
         mensaje = texto,
+        sistema = sistema.Nombre,
+        tiempo = CalcularTiempo(timeline), // si no tienes, luego lo ajustamos
         xml = "/salida.xml",
-        sistema = "/sistema.png",
-        timeline = "/timeline.png",
+        sistemaImg = "/sistema.png",
+        timelineImg = "/timeline.png"
     });
 });
 
+app.MapGet("/mensajes", () =>
+{
+    XMLService xml = new XMLService();
+    xml.CargarXML("wwwroot/entrada.xml");
 
+    var lista = xml.Mensajes;
+
+    var mensajes = new List<(string nombre, string sistema)>();
+
+    Nodo<Mensaje> actual = lista.ObtenerCabeza();
+
+
+
+    while (actual != null)
+    {
+        mensajes.Add((actual.Valor.Nombre, actual.Valor.Sistema));
+
+        actual = actual.Siguiente;
+    }
+
+    mensajes = mensajes.OrderBy(m => m.nombre).ToList();
+
+    return Results.Ok(mensajes.Select(m => new
+    {
+        nombre = m.nombre,
+        sistema = m.sistema
+    }));
+});
 
 app.MapGet("/", () => Results.Redirect("/index.html"));
 

@@ -82,6 +82,10 @@
         <div id="resultado">Esperando ejecucion...</div>
     </div>
 
+    <h3>Seleccionar Mensaje</h3>
+    <select id="mensajes"></select>
+    <button onclick="cargarMensajes()">Cargar Mensajes</button>
+
     <script>
         async function subir() {
             let file = document.getElementById('file').files[0];
@@ -102,30 +106,61 @@
             alert('Archivo subido correctamente');
         }
 
-        async function procesar() {
-            let res = await fetch('/procesar');
+
+        function descargar(ruta) {
+            window.open(ruta, '_blank');
+        }
+   
+        async function cargarMensajes() {
+            let res = await fetch('/mensajes');
             let data = await res.json();
 
-            let html = `
-        <p class="success">Mensaje reconstruido:</p>
-        <h2>${data.mensaje}</h2>
+            let select = document.getElementById('mensajes');
+            select.innerHTML = "";
 
-        <hr>
-
-        <button onclick="descargar('${data.xml}')">
-            Descargar salida.xml
-        </button>
-
-        <h3>Sistema de Drones</h3>
-        <img src="${data.sistema}" width="100%" />
-
-        <h3>⏱Timeline</h3>
-        <img src="${data.timeline}" width="100%" />
-    `;
-
-            document.getElementById('resultado').innerHTML = html;
+            data.forEach(m => {
+                let option = document.createElement("option");
+                option.value = m.nombre;
+                option.text = m.nombre;
+                select.appendChild(option);
+            });
         }
 
+        async function procesar() {
+    let select = document.getElementById('mensajes');
+    let nombre = select.value;
+
+    if (!nombre) {
+        alert("Primero carga y selecciona un mensaje");
+        return;
+    }
+
+    let res = await fetch(`/procesar/${nombre}`);
+
+    if (!res.ok) {
+        alert("Error en el servidor");
+        return;
+    }
+
+    let data = await res.json();
+
+    let html = `
+        <p><b>Sistema:</b> ${data.sistema}</p>
+        <p><b>Tiempo optimo:</b> ${data.tiempo}</p>
+
+        <h2>${data.mensaje}</h2>
+
+        <button onclick="descargar('${data.xml}')">Salida XML</button>
+
+        <h3>Sistema</h3>
+        <img src="${data.sistemaImg}" width="100%"/>
+
+        <h3>Timeline</h3>
+        <img src="${data.timelineImg}" width="100%"/>
+    `;
+
+    document.getElementById('resultado').innerHTML = html;
+}
 
         function descargar(ruta) {
             window.open(ruta, '_blank');
