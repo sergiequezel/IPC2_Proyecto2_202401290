@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Proyecto Drones</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            text-align: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #38bdf8;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        button {
+            background: #38bdf8;
+            border: none;
+            padding: 10px 15px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+        }
+
+        input {
+            margin: 10px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+        }
+
+        .success {
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        img {
+            margin-top: 10px;
+            border-radius: 10px;
+            border: 2px solid #38bdf8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Sistema de Drones</h1>
+
+    <div class="card">
+        <h3>Subir XML</h3>
+        <input type="file" id="file" />
+        <br>
+        <button onclick="subir()">Subir Archivo</button>
+    </div>
+
+    <div class="card">
+        <h3>Procesar</h3>
+        <button onclick="procesar()">Ejecutar Simulacion</button>
+    </div>
+
+    <div class="card">
+        <h3>Resultado</h3>
+        <div id="resultado">Esperando ejecucion...</div>
+    </div>
+
+    <script>
+        async function subir() {
+            let file = document.getElementById('file').files[0];
+
+            if (!file) {
+                alert("Selecciona un archivo primero");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append('file', file);
+
+            await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            alert('Archivo subido correctamente');
+        }
+
+        async function procesar() {
+            let res = await fetch('/procesar');
+            let data = await res.json();
+
+            let html = `
+        <p class="success">Mensaje reconstruido:</p>
+        <h2>${data.mensaje}</h2>
+
+        <hr>
+
+        <button onclick="descargar('${data.xml}')">
+            Descargar salida.xml
+        </button>
+
+        <h3>Sistema de Drones</h3>
+        <img src="${data.sistema}" width="100%" />
+
+        <h3>⏱Timeline</h3>
+        <img src="${data.timeline}" width="100%" />
+    `;
+
+            document.getElementById('resultado').innerHTML = html;
+        }
+
+
+        function descargar(ruta) {
+            window.open(ruta, '_blank');
+        }
+    </script>
+
+</body>
+
+</html>
