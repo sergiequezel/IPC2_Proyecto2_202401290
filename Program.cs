@@ -15,6 +15,8 @@ var app = builder.Build();
 
 app.UseStaticFiles();
 
+List<string> dronesGlobal = new List<string>();
+
 // =========================
 // ENDPOINT: SUBIR XML
 // =========================
@@ -127,6 +129,71 @@ app.MapGet("/mensajes", () =>
         nombre = m.nombre,
         sistema = m.sistema
     }));
+});
+
+app.MapGet("/drones", () =>
+{
+    XMLService xml = new XMLService();
+    xml.CargarXML("wwwroot/entrada.xml");
+
+    List<string> drones = new List<string>();
+
+    // 🔹 XML
+    if (xml.Drones != null)
+    {
+        Nodo<Drone> actual = xml.Drones.ObtenerCabeza();
+
+        while (actual != null)
+        {
+            if (actual.Valor != null)
+                drones.Add(actual.Valor.Nombre);
+
+            actual = actual.Siguiente;
+        }
+    }
+
+    // 🔹 MEMORIA
+    drones.AddRange(dronesGlobal);
+
+    // 🔥 quitar duplicados + ordenar
+    drones = drones.Distinct().OrderBy(d => d).ToList();
+
+    return Results.Ok(drones);
+});
+
+app.MapPost("/drones", async (HttpRequest request) =>
+{
+    var form = await request.ReadFormAsync();
+    string nombre = form["nombre"];
+
+    if (string.IsNullOrWhiteSpace(nombre))
+        return Results.BadRequest("Nombre vacío");
+
+    // 🔥 validar contra TODO (XML + memoria)
+    XMLService xml = new XMLService();
+    xml.CargarXML("wwwroot/entrada.xml");
+
+    List<string> existentes = new List<string>();
+
+    if (xml.Drones != null)
+    {
+        Nodo<Drone> actual = xml.Drones.ObtenerCabeza();
+
+        while (actual != null)
+        {
+            existentes.Add(actual.Valor.Nombre);
+            actual = actual.Siguiente;
+        }
+    }
+
+    existentes.AddRange(dronesGlobal);
+
+    if (existentes.Contains(nombre))
+        return Results.BadRequest("El dron ya existe");
+
+    dronesGlobal.Add(nombre);
+
+    return Results.Ok("Dron agregado");
 });
 
 app.MapGet("/", () => Results.Redirect("/index.html"));

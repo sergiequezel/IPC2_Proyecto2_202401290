@@ -13,6 +13,7 @@ namespace ProyectoDrones.Services
     {
         public Lista<SistemaDrones> Sistemas = new Lista<SistemaDrones>();
         public Lista<Mensaje> Mensajes = new Lista<Mensaje>();
+        public Lista<Drone> Drones;
 
         public void CargarXML(string ruta)
         {
@@ -21,64 +22,79 @@ namespace ProyectoDrones.Services
 
             XmlNode root = doc.SelectSingleNode("config");
 
+            Drones = new Lista<Drone>();
+
+            CargarDrones(root.SelectSingleNode("listaDrones"));
             CargarSistemas(root.SelectSingleNode("listaSistemasDrones"));
             CargarMensajes(root.SelectSingleNode("listaMensajes"));
         }
 
-        private void CargarSistemas(XmlNode nodoSistemas)
-{
-    if (nodoSistemas == null) return;
-
-    foreach (XmlNode sistemaNode in nodoSistemas.SelectNodes("sistemaDrones"))
-    {
-        string nombre = sistemaNode.Attributes["nombre"].Value;
-        int alturaMax = int.Parse(sistemaNode["alturaMaxima"].InnerText);
-        int cantidad = int.Parse(sistemaNode["cantidadDrones"].InnerText);
-
-        SistemaDrones sistema = new SistemaDrones(nombre, cantidad, alturaMax);
-
-        XmlNode contenido = sistemaNode.SelectSingleNode("contenido");
-
-        int index = 0;
-
-        // 🔥 RECORRIDO CORRECTO: dron → alturas
-        XmlNode actual = contenido.FirstChild;
-
-        while (actual != null)
+        private void CargarDrones(XmlNode nodoDrones)
         {
-            if (actual.Name == "dron")
+            if (nodoDrones == null) return;
+
+            foreach (XmlNode dronNode in nodoDrones.SelectNodes("dron"))
             {
-                string nombreDron = actual.InnerText.Trim();
-                sistema.NombresDrones[index] = nombreDron;
+                string nombre = dronNode.InnerText.Trim();
 
-                // Buscar alturas asociadas a ESTE dron
-                XmlNode alturasNode = actual.NextSibling;
-
-                while (alturasNode != null && alturasNode.Name != "alturas")
-                {
-                    alturasNode = alturasNode.NextSibling;
-                }
-
-                if (alturasNode != null)
-                {
-                    foreach (XmlNode alturaNode in alturasNode.SelectNodes("altura"))
-                    {
-                        int altura = int.Parse(alturaNode.Attributes["valor"].Value);
-                        char letra = alturaNode.InnerText.Trim()[0];
-
-                        sistema.Mapa[index, altura] = letra;
-                    }
-                }
-
-                index++;
+                Drones.Agregar(new Drone(nombre));
             }
-
-            actual = actual.NextSibling;
         }
 
-        Sistemas.Agregar(sistema);
-    }
-}
+        private void CargarSistemas(XmlNode nodoSistemas)
+        {
+            if (nodoSistemas == null) return;
+
+            foreach (XmlNode sistemaNode in nodoSistemas.SelectNodes("sistemaDrones"))
+            {
+                string nombre = sistemaNode.Attributes["nombre"].Value;
+                int alturaMax = int.Parse(sistemaNode["alturaMaxima"].InnerText);
+                int cantidad = int.Parse(sistemaNode["cantidadDrones"].InnerText);
+
+                SistemaDrones sistema = new SistemaDrones(nombre, cantidad, alturaMax);
+
+                XmlNode contenido = sistemaNode.SelectSingleNode("contenido");
+
+                int index = 0;
+
+                // 🔥 RECORRIDO CORRECTO: dron → alturas
+                XmlNode actual = contenido.FirstChild;
+
+                while (actual != null)
+                {
+                    if (actual.Name == "dron")
+                    {
+                        string nombreDron = actual.InnerText.Trim();
+                        sistema.NombresDrones[index] = nombreDron;
+
+                        // Buscar alturas asociadas a ESTE dron
+                        XmlNode alturasNode = actual.NextSibling;
+
+                        while (alturasNode != null && alturasNode.Name != "alturas")
+                        {
+                            alturasNode = alturasNode.NextSibling;
+                        }
+
+                        if (alturasNode != null)
+                        {
+                            foreach (XmlNode alturaNode in alturasNode.SelectNodes("altura"))
+                            {
+                                int altura = int.Parse(alturaNode.Attributes["valor"].Value);
+                                char letra = alturaNode.InnerText.Trim()[0];
+
+                                sistema.Mapa[index, altura] = letra;
+                            }
+                        }
+
+                        index++;
+                    }
+
+                    actual = actual.NextSibling;
+                }
+
+                Sistemas.Agregar(sistema);
+            }
+        }
         private void CargarMensajes(XmlNode nodoMensajes)
         {
             if (nodoMensajes == null) return;

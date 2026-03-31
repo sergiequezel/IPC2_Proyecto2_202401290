@@ -86,6 +86,19 @@
     <select id="mensajes"></select>
     <button onclick="cargarMensajes()">Cargar Mensajes</button>
 
+    <div class="card">
+        <h3>🚁 Gestión de Drones</h3>
+
+        <input type="text" id="nuevoDron" placeholder="Nombre del dron" />
+        <button onclick="agregarDron()">Agregar</button>
+
+        <br><br>
+
+        <button onclick="cargarDrones()">Ver Drones</button>
+
+        <ul id="listaDrones"></ul>
+    </div>
+
     <script>
         async function subir() {
             let file = document.getElementById('file').files[0];
@@ -110,7 +123,7 @@
         function descargar(ruta) {
             window.open(ruta, '_blank');
         }
-   
+
         async function cargarMensajes() {
             let res = await fetch('/mensajes');
             let data = await res.json();
@@ -127,24 +140,24 @@
         }
 
         async function procesar() {
-    let select = document.getElementById('mensajes');
-    let nombre = select.value;
+            let select = document.getElementById('mensajes');
+            let nombre = select.value;
 
-    if (!nombre) {
-        alert("Primero carga y selecciona un mensaje");
-        return;
-    }
+            if (!nombre) {
+                alert("Primero carga y selecciona un mensaje");
+                return;
+            }
 
-    let res = await fetch(`/procesar/${nombre}`);
+            let res = await fetch(`/procesar/${nombre}`);
 
-    if (!res.ok) {
-        alert("Error en el servidor");
-        return;
-    }
+            if (!res.ok) {
+                alert("Error en el servidor");
+                return;
+            }
 
-    let data = await res.json();
+            let data = await res.json();
 
-    let html = `
+            let html = `
         <p><b>Sistema:</b> ${data.sistema}</p>
         <p><b>Tiempo optimo:</b> ${data.tiempo}</p>
 
@@ -159,11 +172,49 @@
         <img src="${data.timelineImg}" width="100%"/>
     `;
 
-    document.getElementById('resultado').innerHTML = html;
-}
+            document.getElementById('resultado').innerHTML = html;
+        }
 
         function descargar(ruta) {
             window.open(ruta, '_blank');
+        }
+    </script>
+
+    <script>
+        async function cargarDrones() {
+            let res = await fetch('/drones');
+            let data = await res.json();
+
+            let html = "";
+
+            data.forEach(d => {
+                html += `<li>${d}</li>`;
+            });
+
+            document.getElementById('listaDrones').innerHTML = html;
+        }
+
+        async function agregarDron() {
+            let nombre = document.getElementById('nuevoDron').value;
+
+            if (!nombre) {
+                alert("Escribe un nombre");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("nombre", nombre);
+
+            let res = await fetch('/drones', {
+                method: 'POST',
+                body: formData
+            });
+
+            let text = await res.text();
+
+            alert(text);
+
+            cargarDrones();
         }
     </script>
 
