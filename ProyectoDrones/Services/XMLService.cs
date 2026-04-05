@@ -1,8 +1,5 @@
 using System;
 
-// =========================
-// SERVICES - XML SERVICE
-// =========================
 using System.Xml;
 
 namespace ProyectoDrones.Services
@@ -57,7 +54,6 @@ namespace ProyectoDrones.Services
 
                 int index = 0;
 
-                // 🔥 RECORRIDO CORRECTO: dron → alturas
                 XmlNode actual = contenido.FirstChild;
 
                 while (actual != null)

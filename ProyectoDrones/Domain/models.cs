@@ -2,9 +2,6 @@ using System;
 
 namespace ProyectoDrones.Domain
 {
-    // =========================
-    // NODO GENERICO (TDA BASE)
-    // =========================
     public class Nodo<T>
     {
         public T Valor;
@@ -17,9 +14,6 @@ namespace ProyectoDrones.Domain
         }
     }
 
-    // =========================
-    // LISTA ENLAZADA (TDA)
-    // =========================
     public class Lista<T>
     {
         private Nodo<T> cabeza;
@@ -49,9 +43,6 @@ namespace ProyectoDrones.Domain
         }
     }
 
-    // =========================
-    // DRONE
-    // =========================
     public class Drone
     {
         public string Nombre;
@@ -66,9 +57,6 @@ namespace ProyectoDrones.Domain
         }
     }
 
-    // =========================
-    // INSTRUCCION
-    // =========================
     public class Instruccion
     {
         public string NombreDron;
@@ -81,9 +69,6 @@ namespace ProyectoDrones.Domain
         }
     }
 
-    // =========================
-    // MENSAJE
-    // =========================
     public class Mensaje
     {
         public string Nombre;
@@ -98,19 +83,14 @@ namespace ProyectoDrones.Domain
         }
     }
 
-    // =========================
-    // SISTEMA DE DRONES
-    // =========================
     public class SistemaDrones
     {
         public string Nombre;
         public int AlturaMaxima;
         public int CantidadDrones;
 
-        // MATRIZ DE CODIFICACION (TDA BASE)
         public char[,] Mapa;
 
-        // ARREGLO DE NOMBRES
         public string[] NombresDrones;
 
         public SistemaDrones(string nombre, int cantidad, int alturaMax)
@@ -142,9 +122,6 @@ namespace ProyectoDrones.Domain
         }
     }
 
-    // =========================
-    // ACCION
-    // =========================
     public class Accion
     {
         public string Dron;
@@ -157,9 +134,6 @@ namespace ProyectoDrones.Domain
         }
     }
 
-    // =========================
-    // TIEMPO + ACCIONES
-    // =========================
     public class TiempoAccion
     {
         public int Tiempo;

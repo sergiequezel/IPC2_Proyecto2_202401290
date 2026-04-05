@@ -6,9 +6,6 @@ namespace ProyectoDrones.Services
 
     public class SimulacionService
     {
-        // =========================
-        // SIMULACION NIVEL PRO (OPTIMIZACION PREDICTIVA)
-        // =========================
         public Lista<TiempoAccion> Simular(Mensaje mensaje, SistemaDrones sistema)
         {
             Lista<TiempoAccion> timeline = new Lista<TiempoAccion>();
@@ -32,7 +29,6 @@ namespace ProyectoDrones.Services
 
                 int objetivoActivo = inst.Altura;
 
-                // 🔥 OBJETIVO FUTURO (para optimizar)
                 int indexFuturo = -1;
                 int objetivoFuturo = -1;
 
@@ -53,7 +49,6 @@ namespace ProyectoDrones.Services
                     {
                         int alturaActual = alturas[i];
 
-                        // 🎯 DRON ACTIVO
                         if (i == indexActivo)
                         {
                             if (alturaActual < objetivoActivo)
@@ -72,7 +67,6 @@ namespace ProyectoDrones.Services
                                 ta.Acciones.Agregar(new Accion(sistema.NombresDrones[i], "ESPERAR"));
                             }
                         }
-                        // 🔥 DRON FUTURO (SE PREPOSICIONA)
                         else if (i == indexFuturo)
                         {
                             if (alturaActual < objetivoFuturo)
@@ -99,7 +93,6 @@ namespace ProyectoDrones.Services
                     timeline.Agregar(ta);
                 }
 
-                // 💡 EMISION (REGLA: SOLO UNO)
                 tiempo++;
                 TiempoAccion luzOn = new TiempoAccion(tiempo);
                 luzOn.Acciones.Agregar(new Accion(inst.NombreDron, "LUZ_ON"));
@@ -116,9 +109,6 @@ namespace ProyectoDrones.Services
             return timeline;
         }
 
-        // =========================
-        // RECONSTRUIR MENSAJE
-        // =========================
         public string ReconstruirMensaje(Mensaje mensaje, SistemaDrones sistema)
         {
             string resultado = "";

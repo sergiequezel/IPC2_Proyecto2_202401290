@@ -17,9 +17,6 @@ app.UseStaticFiles();
 
 List<string> dronesGlobal = new List<string>();
 
-// =========================
-// ENDPOINT: SUBIR XML
-// =========================
 app.MapPost("/upload", async (HttpRequest request) =>
 {
     var file = request.Form.Files[0];
@@ -51,9 +48,6 @@ int CalcularTiempo(Lista<TiempoAccion> timeline)
 
     return max;
 }
-// =========================
-// ENDPOINT: PROCESAR
-// =========================
 app.MapGet("/procesar/{nombre}", (string nombre) =>
 {
     XMLService xml = new XMLService();
@@ -138,7 +132,6 @@ app.MapGet("/drones", () =>
 
     List<string> drones = new List<string>();
 
-    // 🔹 XML
     if (xml.Drones != null)
     {
         Nodo<Drone> actual = xml.Drones.ObtenerCabeza();
@@ -152,10 +145,8 @@ app.MapGet("/drones", () =>
         }
     }
 
-    // 🔹 MEMORIA
     drones.AddRange(dronesGlobal);
 
-    // 🔥 quitar duplicados + ordenar
     drones = drones.Distinct().OrderBy(d => d).ToList();
 
     return Results.Ok(drones);
@@ -169,7 +160,6 @@ app.MapPost("/drones", async (HttpRequest request) =>
     if (string.IsNullOrWhiteSpace(nombre))
         return Results.BadRequest("Nombre vacío");
 
-    // 🔥 validar contra TODO (XML + memoria)
     XMLService xml = new XMLService();
     xml.CargarXML("wwwroot/entrada.xml");
 
@@ -194,6 +184,48 @@ app.MapPost("/drones", async (HttpRequest request) =>
     dronesGlobal.Add(nombre);
 
     return Results.Ok("Dron agregado");
+});
+
+app.MapGet("/sistemas", () =>
+{
+    XMLService xml = new XMLService();
+    xml.CargarXML("wwwroot/entrada.xml");
+
+    List<string> sistemas = new List<string>();
+
+    Nodo<SistemaDrones> actual = xml.Sistemas.ObtenerCabeza();
+
+    while (actual != null)
+    {
+        sistemas.Add(actual.Valor.Nombre);
+        actual = actual.Siguiente;
+    }
+
+    sistemas = sistemas.OrderBy(s => s).ToList();
+
+    return Results.Ok(sistemas);
+});
+
+app.MapGet("/sistema/{nombre}", (string nombre) =>
+{
+    XMLService xml = new XMLService();
+    xml.CargarXML("wwwroot/entrada.xml");
+
+    var sistema = xml.BuscarSistema(nombre);
+
+    if (sistema == null)
+        return Results.BadRequest("Sistema no encontrado");
+
+    GraphvizService graph = new GraphvizService();
+
+    graph.GenerarSistemaDot("wwwroot/sistema.dot", sistema);
+    graph.GenerarImagen("wwwroot/sistema.dot", "wwwroot/sistema.png");
+
+    return Results.Ok(new
+    {
+        nombre = sistema.Nombre,
+        imagen = "/sistema.png"
+    });
 });
 
 app.MapGet("/", () => Results.Redirect("/index.html"));

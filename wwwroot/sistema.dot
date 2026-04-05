@@ -1,18 +1,27 @@
 digraph SistemaDrones {
 rankdir=LR;
 node [shape=box, style=filled, color=lightblue];
-Dron01 [label="Dron01"];
-Dron01_1 [label="A (1)", shape=ellipse, color=lightgreen];
-Dron01 -> Dron01_1;
-Dron01_2 [label="B (2)", shape=ellipse, color=lightgreen];
-Dron01 -> Dron01_2;
-Dron01_3 [label="C (3)", shape=ellipse, color=lightgreen];
-Dron01 -> Dron01_3;
 Dron02 [label="Dron02"];
-Dron02_1 [label="X (1)", shape=ellipse, color=lightgreen];
+Dron02_1 [label="M (1)", shape=ellipse, color=lightgreen];
 Dron02 -> Dron02_1;
-Dron02_2 [label="Y (2)", shape=ellipse, color=lightgreen];
+Dron02_2 [label="N (2)", shape=ellipse, color=lightgreen];
 Dron02 -> Dron02_2;
-Dron02_3 [label="Z (3)", shape=ellipse, color=lightgreen];
+Dron02_3 [label="O (3)", shape=ellipse, color=lightgreen];
 Dron02 -> Dron02_3;
+Dron03 [label="Dron03"];
+Dron03_1 [label="P (1)", shape=ellipse, color=lightgreen];
+Dron03 -> Dron03_1;
+Dron03_2 [label="Q (2)", shape=ellipse, color=lightgreen];
+Dron03 -> Dron03_2;
+Dron03_3 [label="R (3)", shape=ellipse, color=lightgreen];
+Dron03 -> Dron03_3;
+Dron03_4 [label="S (4)", shape=ellipse, color=lightgreen];
+Dron03 -> Dron03_4;
+Dron04 [label="Dron04"];
+Dron04_1 [label="T (1)", shape=ellipse, color=lightgreen];
+Dron04 -> Dron04_1;
+Dron04_2 [label="U (2)", shape=ellipse, color=lightgreen];
+Dron04 -> Dron04_2;
+Dron04_3 [label="V (3)", shape=ellipse, color=lightgreen];
+Dron04 -> Dron04_3;
 }

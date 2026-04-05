@@ -7,9 +7,6 @@ namespace ProyectoDrones.Services
 
     public class GraphvizService
     {
-        // =========================
-        // GENERAR GRAFICA DE SISTEMA DE DRONES
-        // =========================
         public void GenerarSistemaDot(string ruta, SistemaDrones sistema)
         {
             using (StreamWriter sw = new StreamWriter(ruta))
@@ -41,9 +38,6 @@ namespace ProyectoDrones.Services
             }
         }
 
-        // =========================
-        // GENERAR GRAFICA DE INSTRUCCIONES
-        // =========================
         public void GenerarInstruccionesDot(string ruta, Lista<TiempoAccion> timeline)
         {
             using (StreamWriter sw = new StreamWriter(ruta))
@@ -90,9 +84,6 @@ namespace ProyectoDrones.Services
             }
         }
 
-        // =========================
-        // OPCIONAL: GENERAR IMAGEN (requiere Graphviz instalado)
-        // =========================
         public void GenerarImagen(string rutaDot, string rutaSalida)
         {
             string comando = $"dot -Tpng {rutaDot} -o {rutaSalida}";
