@@ -1,98 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <respuesta>
   <listaMensajes>
-    <mensaje nombre="Msg3">
-      <sistemaDrones>Sistema2</sistemaDrones>
-      <tiempoOptimo>15</tiempoOptimo>
-      <mensajeRecibido>MQVS</mensajeRecibido>
+    <mensaje nombre="Msg2">
+      <sistemaDrones>Sistema1</sistemaDrones>
+      <tiempoOptimo>14</tiempoOptimo>
+      <mensajeRecibido>BZAW</mensajeRecibido>
       <instrucciones>
         <tiempo valor="1">
           <acciones>
+            <dron nombre="Dron01">SUBIR</dron>
             <dron nombre="Dron02">SUBIR</dron>
-            <dron nombre="Dron03">SUBIR</dron>
-            <dron nombre="Dron04">ESPERAR</dron>
           </acciones>
         </tiempo>
         <tiempo valor="2">
           <acciones>
-            <dron nombre="Dron02">ESPERAR</dron>
-            <dron nombre="Dron03">SUBIR</dron>
-            <dron nombre="Dron04">ESPERAR</dron>
+            <dron nombre="Dron01">SUBIR</dron>
+            <dron nombre="Dron02">SUBIR</dron>
           </acciones>
         </tiempo>
         <tiempo valor="3">
           <acciones>
-            <dron nombre="Dron02">LUZ_ON</dron>
+            <dron nombre="Dron01">ESPERAR</dron>
+            <dron nombre="Dron02">SUBIR</dron>
           </acciones>
         </tiempo>
         <tiempo valor="4">
           <acciones>
-            <dron nombre="Dron02">LUZ_OFF</dron>
+            <dron nombre="Dron01">LUZ_ON</dron>
           </acciones>
         </tiempo>
         <tiempo valor="5">
           <acciones>
-            <dron nombre="Dron02">ESPERAR</dron>
-            <dron nombre="Dron03">ESPERAR</dron>
-            <dron nombre="Dron04">SUBIR</dron>
+            <dron nombre="Dron01">LUZ_OFF</dron>
           </acciones>
         </tiempo>
         <tiempo valor="6">
           <acciones>
-            <dron nombre="Dron03">LUZ_ON</dron>
+            <dron nombre="Dron01">BAJAR</dron>
+            <dron nombre="Dron02">ESPERAR</dron>
           </acciones>
         </tiempo>
         <tiempo valor="7">
           <acciones>
-            <dron nombre="Dron03">LUZ_OFF</dron>
+            <dron nombre="Dron02">LUZ_ON</dron>
           </acciones>
         </tiempo>
         <tiempo valor="8">
           <acciones>
-            <dron nombre="Dron02">ESPERAR</dron>
-            <dron nombre="Dron03">SUBIR</dron>
-            <dron nombre="Dron04">SUBIR</dron>
+            <dron nombre="Dron02">LUZ_OFF</dron>
           </acciones>
         </tiempo>
         <tiempo valor="9">
           <acciones>
-            <dron nombre="Dron02">ESPERAR</dron>
-            <dron nombre="Dron03">SUBIR</dron>
-            <dron nombre="Dron04">SUBIR</dron>
+            <dron nombre="Dron01">ESPERAR</dron>
+            <dron nombre="Dron02">SUBIR</dron>
           </acciones>
         </tiempo>
         <tiempo valor="10">
           <acciones>
-            <dron nombre="Dron02">ESPERAR</dron>
-            <dron nombre="Dron03">ESPERAR</dron>
-            <dron nombre="Dron04">ESPERAR</dron>
+            <dron nombre="Dron01">LUZ_ON</dron>
           </acciones>
         </tiempo>
         <tiempo valor="11">
           <acciones>
-            <dron nombre="Dron04">LUZ_ON</dron>
+            <dron nombre="Dron01">LUZ_OFF</dron>
           </acciones>
         </tiempo>
         <tiempo valor="12">
           <acciones>
-            <dron nombre="Dron04">LUZ_OFF</dron>
+            <dron nombre="Dron01">ESPERAR</dron>
+            <dron nombre="Dron02">ESPERAR</dron>
           </acciones>
         </tiempo>
         <tiempo valor="13">
           <acciones>
-            <dron nombre="Dron02">ESPERAR</dron>
-            <dron nombre="Dron03">ESPERAR</dron>
-            <dron nombre="Dron04">ESPERAR</dron>
+            <dron nombre="Dron02">LUZ_ON</dron>
           </acciones>
         </tiempo>
         <tiempo valor="14">
           <acciones>
-            <dron nombre="Dron03">LUZ_ON</dron>
-          </acciones>
-        </tiempo>
-        <tiempo valor="15">
-          <acciones>
-            <dron nombre="Dron03">LUZ_OFF</dron>
+            <dron nombre="Dron02">LUZ_OFF</dron>
           </acciones>
         </tiempo>
       </instrucciones>
