@@ -14,6 +14,7 @@ namespace ProyectoDrones.Domain
         }
     }
 
+    // aplicando lista simple enlazada (cola)
     public class Lista<T>
     {
         private Nodo<T> cabeza;
@@ -43,6 +44,7 @@ namespace ProyectoDrones.Domain
         }
     }
 
+    // modelo para drones 
     public class Drone
     {
         public string Nombre;
@@ -57,6 +59,7 @@ namespace ProyectoDrones.Domain
         }
     }
 
+    // Modelo para instrucciones 
     public class Instruccion
     {
         public string NombreDron;
@@ -69,6 +72,7 @@ namespace ProyectoDrones.Domain
         }
     }
 
+    // modelo para mensajes
     public class Mensaje
     {
         public string Nombre;

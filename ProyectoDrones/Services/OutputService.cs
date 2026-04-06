@@ -77,6 +77,7 @@ namespace ProyectoDrones.Services
             }
         }
 
+        // funciiona para calcular el tiempo total
         private int CalcularTiempoTotal(Lista<TiempoAccion> timeline)
         {
             int max = 0;
